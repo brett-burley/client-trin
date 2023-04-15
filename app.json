@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Trin",
+    "slug": "trin",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icons/trin-512.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/icons/trin-512.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2089DC"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icons/trin-256.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/icons/trin-32.png"
+    }
+  }
+}
