@@ -8,6 +8,7 @@ import storage from '../../lib/storage/storage';
 import net from '../../lib/net/net';
 import { textToFilename } from '../../lib/text/text';
 import { saveAudio, getData } from '../../lib/dbIndexed/dbIndexed';
+import { createWebAudio } from '../../lib/webAudio/webAudio';
 
 
 
@@ -16,7 +17,7 @@ export default function Sound({ text, shouldPlay, children })
   const [audio, setAudio] = useState();
   const filename = textToFilename(text);
   const uri = net.audioUrl.concat(filename);
-  //const webAudio = new Audio();
+  let webAudio;
 
   useEffect(() => {
     const load = async () => await loadSound();
@@ -62,7 +63,11 @@ export default function Sound({ text, shouldPlay, children })
   {
     const saved = await net.post('/audio/create', { text });
     if(saved) {
-      await createAsync();
+      console.log(uri);
+      webAudio = await createWebAudio(filename);
+      console.log('playing web audio');
+      webAudio.play();
+      //await createAsync();
     }
   }
 
@@ -80,7 +85,7 @@ export default function Sound({ text, shouldPlay, children })
 
   async function playSound() { 
     if(Platform.OS === 'web') {
-      //webAudio.play()
+      webAudio.play()
     } else {
       await audio.playFromPositionAsync(0);
     }
