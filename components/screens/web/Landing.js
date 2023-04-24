@@ -1,11 +1,22 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
+import { Platform, View, StyleSheet, useWindowDimensions } from 'react-native';
 import { Text, Icon, Button } from '@rneui/themed';
 import DownloadDialog from '../../layout/DownloadDialog';
 
 
 export default function Landing({ navigation })
 {
+  useEffect(() => {
+    navigation.navigate('Library')
+  }, []);
+  /*
+  Test for indexedDB
+  useEffect(() => {
+    if(Platform.OS === 'web') {
+      db.addAudio("data");
+    }
+  }, []);
+  */
   return (
     <View style={sty.homepage}>
       <View style={sty.main}>

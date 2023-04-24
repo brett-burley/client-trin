@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Pressable, Text, View, StyleSheet } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 import { Button } from '@rneui/themed';
 import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';
 import common from '../../lib/storage/commonChars';
 import storage from '../../lib/storage/storage';
 import net from '../../lib/net/net';
+import { textToFilename } from '../../lib/text/text';
+import { saveAudio, getData } from '../../lib/dbIndexed/dbIndexed';
 
 
-export default function Sound({ text, shouldPlay, children }) {
+
+export default function Sound({ text, shouldPlay, children })
+{
   const [audio, setAudio] = useState();
+  const filename = textToFilename(text);
+  const uri = net.audioUrl.concat(filename);
+  //const webAudio = new Audio();
 
   useEffect(() => {
     const load = async () => await loadSound();
@@ -40,6 +47,7 @@ export default function Sound({ text, shouldPlay, children }) {
   async function createSound()
   {
     let source;
+    source = await fromNetwork();
     /*
     if(text.length === 1)
       source = await fromCommon();
@@ -47,34 +55,50 @@ export default function Sound({ text, shouldPlay, children }) {
       source = await fromLocal();
     if(!source)
     */
-      source = await fromNetwork();
-    
-    await createAsync(source);
   }
 
 
   async function fromNetwork()
   {
-    console.log('creating from network');
     const saved = await net.post('/audio/create', { text });
-    const audioUrl = `${net.apiUrl}/static/audio/${text}.mp3`
     if(saved) {
-      const [ asset ] = await Asset.loadAsync(audioUrl);
-      await storage.setData(`${text}URI`, asset.localUri);
-      return asset;
+      await createAsync();
     }
   }
 
-  async function fromLocal()
+
+  async function createAsync()
   {
-    const localUri = await storage.getData(`${text}URI`);
-    if(!localUri) return false;
+    const source = { uri };
+    const options = { shouldPlay };
+    const soundObj = await Audio.Sound.createAsync(source, options);
     
-    console.log('creating from local');
-    const [ asset ] = await Asset.loadAsync(localUri);
-    return asset;
+    setAudio(soundObj.sound);
+    return soundObj;
   }
 
+
+  async function playSound() { 
+    if(Platform.OS === 'web') {
+      //webAudio.play()
+    } else {
+      await audio.playFromPositionAsync(0);
+    }
+  }
+}
+
+
+  /*
+  async function fromLocal()
+  {
+    const local = await getData(text);
+    if(!local) return false;
+    console.log('local: ', local);
+
+    webAudio.src = URL.createObjectURL(local.sound);
+    setAudio();
+    return true;
+  }
 
   async function fromCommon()
   {
@@ -84,20 +108,23 @@ export default function Sound({ text, shouldPlay, children }) {
 
 
 
-  async function createAsync(source)
+  async function assetFromMetadata(text, url)
   {
-    if(!source) return;
-    const { sound } = await Audio.Sound.createAsync(source, { shouldPlay });
-    setAudio(sound);
+    const name = text.toWellFormed();
+    const required = {
+      name,
+      hash: null,
+      type: 'mp3',
+      scales: [],
+      httpServerLocation: url
+    };
+
+    const meta = {
+      height: null,
+      width: null,
+      ...required
+    };
+    const asset = await Asset.fromMetadata(meta).downloadAsync();
+    return asset;
   }
-
-
-  async function playSound() {
-    await audio.playFromPositionAsync(0);
-
-  }
-
-}
-
-const styles = StyleSheet.create({
-});
+*/

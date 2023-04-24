@@ -20,7 +20,7 @@ export default function ReadLine()
         <Line line={line} />
         <Divider style={sty.midDivider} width={2} />
         <View style={sty.characters}>
-          <Characters characters={characters} />
+          {/*<Characters characters={characters} />*/}
         </View>
       </View>
     </View>

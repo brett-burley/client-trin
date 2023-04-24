@@ -7,6 +7,21 @@ import useLibrary from '../../../hooks/useLibrary';
 
 export default function Books()
 {
+  /*
+  const { navigate } = useNavigation();
+  const book = {
+    title: "Pangu created the World",
+    id: "PangucreatedtheWorld",
+    author: "Shengzhou Ren", 
+    imgUri: "/assets/images/covers/PangucreatedtheWorld.jpg",
+    img: require('/assets/images/covers/PangucreatedtheWorld.jpg'),
+    free: true,
+  };
+
+  useEffect(() => {
+    navigate("Book", { book });
+  }, []);
+  */
   return (
     <View style={sty.books}>
       <View style={sty.booksSection}>
