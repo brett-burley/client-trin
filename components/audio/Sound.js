@@ -71,7 +71,6 @@ export default function Sound({ text, shouldPlay, children })
       console.log('use FileSystem to get and store audio')
       await createAsync();
     }
-
   }
 
 
