@@ -4,12 +4,9 @@ import { Button } from '@rneui/themed';
 import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';
 import common from '../../lib/storage/commonChars';
-import storage from '../../lib/storage/storage';
 import net from '../../lib/net/net';
 import { textToFilename } from '../../lib/text/text';
-import { saveAudio, getData } from '../../lib/dbIndexed/dbIndexed';
 import { createWebAudio } from '../../lib/webAudio/webAudio';
-
 
 
 export default function Sound({ text, shouldPlay, children })
@@ -62,13 +59,19 @@ export default function Sound({ text, shouldPlay, children })
   async function fromNetwork()
   {
     const saved = await net.post('/audio/create', { text });
-    if(saved) {
-      console.log(uri);
-      webAudio = await createWebAudio(filename);
-      console.log('playing web audio');
-      webAudio.play();
-      //await createAsync();
+    if(!saved) {
+      setAudio(null);
+      return;
     }
+    
+    if(Platform.OS === 'web') {
+      webAudio = await createWebAudio(filename);
+      webAudio.play();
+    } else {
+      console.log('use FileSystem to get and store audio')
+      await createAsync();
+    }
+
   }
 
 

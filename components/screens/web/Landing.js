@@ -6,17 +6,6 @@ import DownloadDialog from '../../layout/DownloadDialog';
 
 export default function Landing({ navigation })
 {
-  useEffect(() => {
-    navigation.navigate('Library')
-  }, []);
-  /*
-  Test for indexedDB
-  useEffect(() => {
-    if(Platform.OS === 'web') {
-      db.addAudio("data");
-    }
-  }, []);
-  */
   return (
     <View style={sty.homepage}>
       <View style={sty.main}>

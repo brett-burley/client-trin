@@ -24,6 +24,7 @@ export default function ScreenNav()
           name='Webpage'
           component={Webpage}
           options={{
+            title: 'Trin',
             tabBarStyle: { display: 'none' },
             tabBarItemStyle: { display: 'none' },
             headerShown: false,
