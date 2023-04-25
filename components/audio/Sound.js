@@ -6,7 +6,7 @@ import { Asset } from 'expo-asset';
 import common from '../../lib/storage/commonChars';
 import net from '../../lib/net/net';
 import { textToFilename } from '../../lib/text/text';
-import { createWebAudio } from '../../lib/webAudio/webAudio';
+import { getWebAudio } from '../../lib/webAudio/webAudio';
 
 
 export default function Sound({ text, shouldPlay, children })
@@ -65,7 +65,7 @@ export default function Sound({ text, shouldPlay, children })
     }
     
     if(Platform.OS === 'web') {
-      webAudio = await createWebAudio(filename);
+      webAudio = await getWebAudio(filename);
       webAudio.play();
     } else {
       console.log('use FileSystem to get and store audio')
