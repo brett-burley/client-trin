@@ -17,10 +17,10 @@ export default function ReadLine()
   return (
     <View style={sty.readLine}>
       <View style={sty.content}>
-        <Line line={line} />
+        {/*<Line line={line} />*/}
         <Divider style={sty.midDivider} width={2} />
         <View style={sty.characters}>
-          {/*<Characters characters={characters} />*/}
+          <Characters characters={characters} />
         </View>
       </View>
     </View>
@@ -63,6 +63,12 @@ function LineSound({ mandarin })
 
 function Characters({ characters })
 {
+  const c = {
+    mandarin: '其',
+    pinyin: 'Qí',
+    english: 'That'
+  }
+  return <CharacterContent c={c} />
   return characters.map((c, i) => <CharacterContent c={c} key={i} />);
 }
 

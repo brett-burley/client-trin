@@ -3,7 +3,6 @@ import { Platform, Pressable, Text, View } from 'react-native';
 import { Button } from '@rneui/themed';
 import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';
-import common from '../../lib/storage/commonChars';
 import net from '../../lib/net/net';
 import { textToFilename } from '../../lib/text/text';
 import { getWebAudio } from '../../lib/webAudio/webAudio';
@@ -45,14 +44,11 @@ export default function Sound({ text, shouldPlay, children })
   async function createSound()
   {
     let source;
-    source = await fromNetwork();
-    /*
-    if(text.length === 1)
+    if(text.length === 1) {
       source = await fromCommon();
-    else
-      source = await fromLocal();
-    if(!source)
-    */
+    } else {
+      source = await fromNetwork();
+    }
   }
 
 
@@ -65,7 +61,7 @@ export default function Sound({ text, shouldPlay, children })
     }
     
     if(Platform.OS === 'web') {
-      webAudio = await getWebAudio(filename);
+      webAudio = await getWebAudio(text);
       webAudio.play();
     } else {
       console.log('use FileSystem to get and store audio')
