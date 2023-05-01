@@ -7,6 +7,7 @@ import useLibrary from '../../../hooks/useLibrary';
 
 export default function Books()
 {
+  // auto navigate
   /*
   const { navigate } = useNavigation();
   const book = {
@@ -25,12 +26,15 @@ export default function Books()
   return (
     <View style={sty.books}>
       <View style={sty.booksSection}>
-        <Text style={sty.sectionTitle}>Free Books</Text>
+        <Text style={sty.sectionTitle}>
+          All Books
+        </Text>
         <View style={sty.booksRow}>
           <AllBooks />
         </View>
       </View>
 
+      {/*
       <Divider width={1} insertType="left" color="#2089dc" style={sty.divider} />
 
       <View style={sty.booksSection}>
@@ -43,6 +47,7 @@ export default function Books()
           />
         </View>
       </View>
+      */}
     </View>
   );
 }

@@ -17,7 +17,7 @@ export default function ReadLine()
   return (
     <View style={sty.readLine}>
       <View style={sty.content}>
-        {/*<Line line={line} />*/}
+        <Line line={line} />
         <Divider style={sty.midDivider} width={2} />
         <View style={sty.characters}>
           <Characters characters={characters} />
@@ -43,9 +43,11 @@ function Line({ line })
   } else {
     return (
       <View style={sty.line}>
-        <LineSound mandarin={mandarin} />
-        <Text style={sty.mandarin}>{mandarin}</Text>
         <Text style={sty.english}>{english}</Text>
+        <View style={sty.lineChinese}>
+          <LineSound mandarin={mandarin} />
+          <Text style={sty.mandarin}>{mandarin}</Text>
+        </View>
       </View>
     );
   }
@@ -63,12 +65,6 @@ function LineSound({ mandarin })
 
 function Characters({ characters })
 {
-  const c = {
-    mandarin: '其',
-    pinyin: 'Qí',
-    english: 'That'
-  }
-  return <CharacterContent c={c} />
   return characters.map((c, i) => <CharacterContent c={c} key={i} />);
 }
 
@@ -93,7 +89,7 @@ function CharacterContent({ c })
     return content;
   else
     return (
-      <Sound text={mandarin}>
+      <Sound text={mandarin} shouldPlay={false}>
         { content }
       </Sound>
     );
@@ -177,6 +173,7 @@ const sty = StyleSheet.create({
   },
   english: {
     fontSize: 40 / fontScale,
+    marginBottom: 15,
   },
   pinyin: {
     fontSize: 15 / fontScale,
@@ -205,10 +202,15 @@ const sty = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  lineChinese: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 20,
+  },
   midDivider: {
     width: '90%',
-    marginTop: 10,
-    marginBottom: 20,
+    margin: 20,
   },
   divider: {
     width: '100%',

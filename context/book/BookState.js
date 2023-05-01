@@ -74,11 +74,11 @@ const BookState = (props) =>
   }
 
  
-  function getPage(index)
+  function getPage()
   {
     const book = state.book;
     const start = state.section;
-    const end = start + pageLimit;
+    const end = start + 5;
     const page = book.slice(start, end);
     return page;
   }

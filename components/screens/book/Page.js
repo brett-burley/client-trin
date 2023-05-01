@@ -4,8 +4,7 @@ import useMode from '../../../hooks/useMode';
 import useBook from '../../../hooks/useBook';
 
 import Controls from './Controls';
-import ReadNav from '../../navs/ReadNav';
-//import Listen from './Listen';
+import BookNav from '../../navs/BookNav';
 
 
 export default function Page() 
@@ -50,7 +49,7 @@ function TabPage()
 {
   return (
     <TabView.Item style={sty.tabViewItem}>
-      <ReadNav />
+      <BookNav />
     </TabView.Item>
   );
 }

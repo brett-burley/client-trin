@@ -6,6 +6,10 @@ import DownloadDialog from '../../layout/DownloadDialog';
 
 export default function Landing({ navigation })
 {
+  // auto navigate
+  useEffect(() => {
+    navigation.navigate('Library');
+  }, []);
   return (
     <View style={sty.homepage}>
       <View style={sty.main}>

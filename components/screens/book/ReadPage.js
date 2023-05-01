@@ -1,36 +1,39 @@
 import { useEffect, useState } from 'react';
 import { Platform, ScrollView, View, StyleSheet } from 'react-native';
 import { Divider, Text } from '@rneui/themed';
-import useBook from '../../hooks/useBook';
-import translate from '../../lib/translate/translate';
+import useBook from '../../../hooks/useBook';
+import translate from '../../../lib/translate/translate';
 
 
 export default function ReadPage()
 {
   const [text, setText] = useState();
-  const { section, getPage } = useBook();
-
-  console.log('ReadPage section', section);
+  const { getPage } = useBook();
 
   useEffect(() => {
     const load = async () => {
       const page = getPage();
-      const payload = await translate.translatePage(page); 
-      setText(payload);
+      setText(page);
     }
     load();
-  }, [section])
+  }, [])
 
-  if(!text) return null;
-  const content = text.map((section, i) => <ReadLine key={i} section={section} />);
-   
-   return (
+  return (
     <ScrollView contentContainerStyle={sty.scrollView}>
       <View style={sty.scrollViewWrapper}>
-        {content}
+        <PageContent page={text} />
       </View>
     </ScrollView>
   );
+
+}
+
+
+function PageContent({ page })
+{
+  if(!page || !page.length)
+    return <Text>Could not load</Text>
+  return page.map((section, i) => <ReadLine key={i} section={section} />);
 }
 
 
@@ -38,35 +41,69 @@ function ReadLine({ section })
 {
   const { line, characters } = section;
 
+
   return (
     <View style={sty.section}>
       <View style={sty.sectionContent}>
         <Text style={sty.english}>
           {line.english}
         </Text>
+
         <View style={sty.characters}>
-          {characters.map((c, i) => {
-            return (
-              <View key={i} style={sty.characterEntry}>
-                <Text style={sty.mandarin}>
-                  {c.mandarin}
-                </Text>
-                <Text style={sty.pinyin}>
-                  {c.pinyin}
-                </Text>
-                <Text style={sty.charEnglish}>
-                  {c.english}
-                </Text>
-              </View>
-            );
-          })}
+          {characters.map((c, i) => <ReadCharacters key={i} c={c} />)}
         </View>
       </View>
+
       <Divider style={sty.divider} />
     </View>
   );
 }
 
+
+function ReadCharacters({ c })
+{
+  const { mandarin, pinyin, english } = c;
+  const { together, seperate } = english;
+
+  return (
+    <View style={sty.characterEntry}>
+      <Text style={sty.together}>{together}</Text>
+
+      <Text style={sty.mandarin}>{mandarin}</Text>
+      
+      <CharactersPinyin arr={pinyin} />
+      
+      <CharactersEnglish arr={seperate} />
+    </View>
+  );
+}
+
+function CharactersPinyin({ arr })
+{
+  return (
+    <View style={sty.charArr}>
+      {arr.map((p, i) => (
+        <Text key={i} style={sty.pinyin}>
+          {p}
+        </Text>
+      ))}
+    </View>
+  );
+}
+
+function CharactersEnglish({ arr })
+{
+  if(!arr.length) return null;
+  return (
+    <View style={sty.charArr}>
+      {arr.map((e, i) => (
+        <Text key={i} style={sty.charEnglish}>
+          {e}
+        </Text>
+      ))}
+    </View>
+  );
+}
 
 const sty = StyleSheet.create({
   scrollView: {
@@ -111,5 +148,16 @@ const sty = StyleSheet.create({
   },
   charEnglish: {
     fontSize: 11,
+    textAlign: 'center',
   },
+  together: {
+    fontSize: 20,
+  },
+  charArr: {
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-evenly',
+  },
+
 });
