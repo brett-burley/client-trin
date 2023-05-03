@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
 import {  Divider, TabView } from '@rneui/themed';
-import useMode from '../../../hooks/useMode';
 import useBook from '../../../hooks/useBook';
 
 import Controls from './Controls';

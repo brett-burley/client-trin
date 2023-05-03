@@ -8,7 +8,6 @@ import useLibrary from '../../../hooks/useLibrary';
 export default function Books()
 {
   // auto navigate
-  /*
   const { navigate } = useNavigation();
   const book = {
     title: "Pangu created the World",
@@ -22,7 +21,7 @@ export default function Books()
   useEffect(() => {
     navigate("Book", { book });
   }, []);
-  */
+
   return (
     <View style={sty.books}>
       <View style={sty.booksSection}>

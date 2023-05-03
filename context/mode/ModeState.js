@@ -41,12 +41,19 @@ const ModeState = (props) =>
     }
   }
 
+  function setScreen(screen)
+  {
+    if(screen !== state.screen)
+      dispatch({ type: mode_t.MODE_SUCCESS, payload: { screen } });
+  }
+
 
   return (
     <ModeContext.Provider
       value={{
         mode: state.mode,
         setMode,
+        setScreen,
       }}
     >
       {props.children}

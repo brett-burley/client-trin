@@ -4,15 +4,21 @@ import { useTheme, Divider, Card, Button, Icon } from '@rneui/themed';
 import useMode from '../../../hooks/useMode';
 import useBook from '../../../hooks/useBook';
 import Sound from '../../audio/Sound';
+import { strokes } from '../../../lib/strokes/strokes';
 
 
 const fontScale = PixelRatio.getFontScale()
 
 
-export default function ReadLine()
+export default function ReadLine({ navigation })
 {
-  const { current } = useBook();
+  const { current, setMode } = useBook();
   const { line, characters } = current;
+  console.log(strokes);
+
+  useEffect(() => {
+    navigation.addListener('tabPress', e => setMode('line'))
+  }, []);
 
   return (
     <View style={sty.readLine}>
@@ -114,7 +120,7 @@ function PinyinText({ pinyin, english })
         return (
           <View key={i} style={sty.pinyinTextContent}>
             <Text style={sty.pinyin}>{p}</Text>
-            <Text style={sty.pinyin}>{eng}</Text>
+            <Text style={sty.englishChar}>{eng}</Text>
           </View>
         ); 
       })
@@ -122,7 +128,7 @@ function PinyinText({ pinyin, english })
       return (
         <View style={sty.pinyinTextContent}>
           <Text style={sty.pinyin}>{pinyin[0]}</Text>
-          <Text style={sty.pinyin}>{together}</Text>
+          <Text style={sty.englishChar}>{together}</Text>
         </View>
       ); 
     }
@@ -168,7 +174,7 @@ const sty = StyleSheet.create({
   mandarin: {
     letterSpacing: 10,
     textAlign: 'center',
-    fontSize: 40 / fontScale,
+    fontSize: 50 / fontScale,
     fontWeight: '500',
   },
   english: {
@@ -176,7 +182,7 @@ const sty = StyleSheet.create({
     marginBottom: 15,
   },
   pinyin: {
-    fontSize: 15 / fontScale,
+    fontSize: 22 / fontScale,
   },
   charEnglish: {
     fontSize: 20 / fontScale,

@@ -3,7 +3,7 @@ export const initState = {
   book: [],
   current: {},
   section: 0,
-  mode: 'page',
+  screen: 'line',
   id: 0,
 };
 

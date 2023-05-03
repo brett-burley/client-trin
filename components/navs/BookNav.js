@@ -11,7 +11,6 @@ export default function BookNav()
 {
   return (
     <Tab.Navigator
-      initialRouteName='page'
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: 'rgba(170,73,235,0.3)',

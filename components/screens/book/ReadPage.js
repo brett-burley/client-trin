@@ -5,55 +5,53 @@ import useBook from '../../../hooks/useBook';
 import translate from '../../../lib/translate/translate';
 
 
-export default function ReadPage()
+export default function ReadPage({ navigation })
 {
-  const [text, setText] = useState();
-  const { getPage } = useBook();
+  const [lines, setLines] = useState();
+  const { getPage, setScreen, section } = useBook();
+
+  useEffect(() => {
+    navigation.addListener('tabPress', e => setScreen('page'))
+  }, []);
 
   useEffect(() => {
     const load = async () => {
       const page = getPage();
-      setText(page);
+      setLines(page);
     }
     load();
-  }, [])
+  }, [section])
 
   return (
     <ScrollView contentContainerStyle={sty.scrollView}>
-      <View style={sty.scrollViewWrapper}>
-        <PageContent page={text} />
-      </View>
+      <Page lines={lines} />
     </ScrollView>
   );
 
 }
 
 
-function PageContent({ page })
+function Page({ lines })
 {
-  if(!page || !page.length)
+  if(!lines || !lines.length)
     return <Text>Could not load</Text>
-  return page.map((section, i) => <ReadLine key={i} section={section} />);
+  return lines.map((entry, i) => <Line entry={entry} key={i} />);
 }
 
 
-function ReadLine({ section })
+function Line({ entry })
 {
-  const { line, characters } = section;
-
+  const { line, characters } = entry;
 
   return (
-    <View style={sty.section}>
-      <View style={sty.sectionContent}>
-        <Text style={sty.english}>
-          {line.english}
-        </Text>
+    <View style={sty.line}>
+      <Text style={sty.english}>
+        {line.english}
+      </Text>
 
-        <View style={sty.characters}>
-          {characters.map((c, i) => <ReadCharacters key={i} c={c} />)}
-        </View>
+      <View style={sty.characters}>
+        {characters.map((c, i) => <ReadCharacters c={c} key={i} />)}
       </View>
-
       <Divider style={sty.divider} />
     </View>
   );
@@ -67,13 +65,13 @@ function ReadCharacters({ c })
 
   return (
     <View style={sty.characterEntry}>
-      <Text style={sty.together}>{together}</Text>
-
       <Text style={sty.mandarin}>{mandarin}</Text>
       
       <CharactersPinyin arr={pinyin} />
       
-      <CharactersEnglish arr={seperate} />
+      <CharactersEnglish english={english} />
+
+      <Text style={sty.together}>{together}</Text>
     </View>
   );
 }
@@ -83,7 +81,7 @@ function CharactersPinyin({ arr })
   return (
     <View style={sty.charArr}>
       {arr.map((p, i) => (
-        <Text key={i} style={sty.pinyin}>
+        <Text style={sty.pinyin} key={i}>
           {p}
         </Text>
       ))}
@@ -91,16 +89,15 @@ function CharactersPinyin({ arr })
   );
 }
 
-function CharactersEnglish({ arr })
+function CharactersEnglish({ english })
 {
-  if(!arr.length) return null;
+  const { together, seperate } = english;
+  if(!seperate.length)
+    return <Text style={sty.charEnglish}>{together}</Text>
+
   return (
     <View style={sty.charArr}>
-      {arr.map((e, i) => (
-        <Text key={i} style={sty.charEnglish}>
-          {e}
-        </Text>
-      ))}
+      {seperate.map((e, i) => <Text style={sty.charEnglish} key={i}>{e}</Text>)}
     </View>
   );
 }
@@ -108,22 +105,16 @@ function CharactersEnglish({ arr })
 const sty = StyleSheet.create({
   scrollView: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollViewWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center',
-  },
-  section: {
-    flexGrow: 1,
-    gap: 20,
-    marginBottom: 40,
-  },
-  sectionContent: {
     justifyContent: 'center',
+    padding: 10,
+  },
+  line: {
     alignItems: 'center',
+    marginBottom: 40,
+    marginRight: 20,
+    marginLeft: 20,
   },
   characters: {
     flexDirection: 'row',
@@ -134,7 +125,8 @@ const sty = StyleSheet.create({
     marginLeft: 5
   },
   english: {
-    fontSize: 20,
+    fontSize: 25,
+    fontWeight: '700',
   },
   mandarin: {
     fontSize: 40,
@@ -145,19 +137,20 @@ const sty = StyleSheet.create({
     fontSize: 15,
     letterSpacing: 1,
     marginBottom: 5,
+    textAlign: 'center',
   },
   charEnglish: {
     fontSize: 11,
     textAlign: 'center',
   },
   together: {
-    fontSize: 20,
+    fontSize: 17,
   },
   charArr: {
     flex: 1,
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
   },
 
 });

@@ -1,5 +1,6 @@
 export const initState = {
   mode: 'read',
+  screen: 'line',
 }; 
 
 export const mode_t = {

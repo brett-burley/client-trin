@@ -9,7 +9,7 @@ import net from '../../lib/net/net'
 import translate from '../../lib/translate/translate';
 
 
-const pageLimit = 3;
+const PAGE_LEN = 4;
 
 
 const BookState = (props) =>
@@ -27,8 +27,9 @@ const BookState = (props) =>
         book = freeBooks[id];
       }
       const section = await getSection(id);
+      const screen = await storage.getData('screen')
       const current = book[section];
-      const payload = { book, current, section, id };
+      const payload = { book, current, section, id, screen };
 
       dispatch({ type: book_t.BOOK_LOADED, payload });
       return true;
@@ -51,15 +52,20 @@ const BookState = (props) =>
     }
   }
 
-
+  async function setScreen(screen)
+  {
+    if(screen !== state.screen) {
+      await storage.setData('screen', screen);
+      dispatch({ type: book_t.BOOK_SUCCESS, payload: { screen } }); 
+    }
+  }
 
   async function setSection(value)
   {
     const book = state.book;
     book[state.section] = state.current;
 
-    const mode = state.mode;
-    const section = state.section + value;
+    const section = getSectionValue(value);
     const length = book.length;
     if(section === value, section < 0 || section > length) return;
 
@@ -69,8 +75,16 @@ const BookState = (props) =>
     await setSectionLocal(state.id, section);
 
     dispatch({ type: book_t.BOOK_LINE, payload });
-  
-    storage.setData('section', section); 
+  }
+
+
+  function getSectionValue(value)
+  {
+    const { screen, section } = state;
+    if(screen === 'line')
+      return section + value;
+    else
+      return section + (value * PAGE_LEN);
   }
 
  
@@ -78,7 +92,7 @@ const BookState = (props) =>
   {
     const book = state.book;
     const start = state.section;
-    const end = start + 5;
+    const end = start + PAGE_LEN;
     const page = book.slice(start, end);
     return page;
   }
@@ -117,6 +131,7 @@ const BookState = (props) =>
         bookLength: state.book.length,
         section: state.section,
         loadBook,
+        setScreen,
         setSection,
         translateCurrent,
         getPage,
