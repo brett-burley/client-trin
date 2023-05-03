@@ -52,7 +52,6 @@ function Line({ entry })
       <View style={sty.characters}>
         {characters.map((c, i) => <ReadCharacters c={c} key={i} />)}
       </View>
-      <Divider style={sty.divider} />
     </View>
   );
 }
@@ -67,31 +66,51 @@ function ReadCharacters({ c })
     <View style={sty.characterEntry}>
       <Text style={sty.mandarin}>{mandarin}</Text>
       
-      <CharactersPinyin arr={pinyin} />
-      
-      <CharactersEnglish english={english} />
+      <CharactersPinyin arr={pinyin} english={english} />
 
       <Text style={sty.together}>{together}</Text>
+      <Divider style={sty.divider} />
     </View>
   );
 }
 
-function CharactersPinyin({ arr })
+function CharactersPinyin({ arr, english })
 {
+  const { together, seperate } = english;
+
   return (
     <View style={sty.charArr}>
-      {arr.map((p, i) => (
-        <Text style={sty.pinyin} key={i}>
-          {p}
-        </Text>
-      ))}
+      <Single />
     </View>
   );
+
+
+  function Single()
+  {
+    if(seperate.length) {
+      return arr.map((p, i) => (
+        <View style={sty.pinyinEntry} key={i}>
+          <Text style={sty.pinyin}>{p}</Text>
+          <Text style={sty.charEnglish}>{seperate[i]}</Text>
+        </View>
+      ));
+    }
+
+    return (
+      <View style={sty.pinyinTogether}>
+        {arr.map((p, i) => (
+          <View style={sty.pinyinEntry} key={i}>
+            <Text style={sty.pinyin}>{p}</Text>
+          </View>
+        ))}
+        <Text style={sty.charEnglish}>{together}</Text>
+      </View>
+    );
+  }
 }
 
 function CharactersEnglish({ english })
 {
-  const { together, seperate } = english;
   if(!seperate.length)
     return <Text style={sty.charEnglish}>{together}</Text>
 
@@ -105,10 +124,11 @@ function CharactersEnglish({ english })
 const sty = StyleSheet.create({
   scrollView: {
     flex: 1,
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    padding: 10,
+    alignItems: 'center',
   },
   line: {
     alignItems: 'center',
@@ -122,7 +142,7 @@ const sty = StyleSheet.create({
   },
   characterEntry: {
     alignItems: 'center',
-    marginLeft: 5
+    margin: 5,
   },
   english: {
     fontSize: 25,
@@ -150,7 +170,15 @@ const sty = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
-
+  pinyinEntry: {
+    alignItems: 'center',
+  },
+  pinyinTogether: {
+    alignItems: 'center',
+  },
+  divider: {
+    width: '90%',
+  },
 });
