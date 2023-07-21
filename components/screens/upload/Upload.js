@@ -1,3 +1,87 @@
+import { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Badge, Overlay, Text, Card } from '@rneui/themed';
+
+
+
+export default function Upload({ isVisible, onClose })
+{
+  useEffect(() => {
+    if(isVisible)
+      setTimeout(() => onClose(), 4000);
+  }, [isVisible])
+
+  return (
+    <Overlay
+      isVisible={isVisible}
+      onBackdropPress={onClose}
+      overlayStyle={sty.overlay}
+    >
+      <UnavailableMsg />
+    </Overlay>
+  );
+}
+
+
+function UnavailableMsg()
+{
+  return (
+    <View style={sty.cardContainer}>
+      <Card containerStyle={sty.card}>
+        <Badge
+          value="Oops!"
+          status="error"
+          badgeStyle={sty.badge}
+          textStyle={sty.badgeText}
+        />
+        <Text style={sty.message}>Upload Temporarily Unavailable</Text>
+      </Card>
+    </View>
+  );
+}
+
+const sty = StyleSheet.create({
+  overlay: {
+    backgroundColor: '#303337',
+    width: '50%',
+    height: '50%',
+    padding: 0,
+  },
+  cardContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 0,
+    border: 0,
+    padding: 0,
+    backgroundColor: '#242424',
+  },
+  card: {
+    width: '90%',
+    height: '80%',
+    elevation: 5,
+    justifyContent: 'center',
+  },
+  badge: {
+    margin: 'auto',
+    width: 100,
+    height: 100,
+    borderRadius: 25,
+  },
+  badgeText: {
+    fontSize: 25,
+  },
+  message: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginTop: 10,
+  },
+});
+
+
+
+
+/*
 import { useState, useRef, useEffect } from 'react';
 import { Platform, Pressable, View, StyleSheet } from 'react-native';
 import { Badge, Overlay, Divider, Dialog, Text, Card, Button, Input, Icon } from '@rneui/themed';
@@ -8,25 +92,8 @@ import { Badge, Overlay, Divider, Dialog, Text, Card, Button, Input, Icon } from
 //import { formatMandarin } from '../../lib/text/text';
 //import * as Clipboard from 'expo-clipboard';
 
-
-
-export default function Upload({ isVisible, onClose })
-{
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
-
-  const handleUpload = () => {
-    console.log(title, text);
-  };
-
-  return (
-    <Overlay
-      isVisible={isVisible}
-      onBackdropPress={onClose}
-      overlayStyle={sty.overlay}
-    >
-      <UnavailableMsg />
-      {/*
       <Text style={sty.title}>Upload Book</Text>
 
       <View style={sty.content}>
@@ -44,29 +111,7 @@ export default function Upload({ isVisible, onClose })
         />
         <Button title="Upload" onPress={handleUpload} />
       </View>
-      */}
-    </Overlay>
-  );
 
-function UnavailableMsg()
-{
-  return (
-    <View style={sty.cardContainer}>
-      <Card containerStyle={sty.card}>
-        <Badge
-          value="Oops!"
-          status="error"
-          badgeStyle={sty.badge}
-          textStyle={sty.badgeText}
-        />
-        <Text style={sty.message}>Upload Temporarily Unavailable</Text>
-      </Card>
-    </View>
-  );
-};
-
-
-/*
   return (
     <View style={sty.container}>
       <View style={sty.body}>
@@ -273,10 +318,6 @@ function UnavailableMsg()
       }
     }
   }
-  */
-}
-
-
 
 const sty = StyleSheet.create({
   overlay: {
@@ -378,3 +419,8 @@ const sty = StyleSheet.create({
     fontSize: 15,
   },
 });
+  */
+
+
+
+
