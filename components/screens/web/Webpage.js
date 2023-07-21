@@ -4,11 +4,11 @@ import { Text, Icon, Button } from '@rneui/themed';
 import DownloadDialog from '../../layout/DownloadDialog';
 
 
-export default function Landing({ navigation })
+export default function Webpage({ navigation })
 {
   // auto navigate
   useEffect(() => {
-    navigation.navigate('Library');
+    navigation.navigate('Home');
   }, []);
   return (
     <View style={sty.homepage}>
@@ -20,7 +20,7 @@ export default function Landing({ navigation })
           </Text>
         </View>
 
-        <GotoBtn onPress={() => navigation.navigate('Library')} />
+        <GotoBtn onPress={() => navigation.navigate('Home')} />
 
         <MobileBtns />
       </View>

@@ -16,6 +16,7 @@
     "@expo/webpack-config": "^18.0.1",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-navigation/bottom-tabs": "^6.5.7",
+    "@react-navigation/material-bottom-tabs": "^6.2.16",
     "@react-navigation/material-top-tabs": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@rneui/base": "^4.0.0-rc.7",
@@ -26,10 +27,14 @@
     "expo-av": "~13.2.1",
     "expo-constants": "~14.2.1",
     "expo-status-bar": "~1.4.4",
+    "lodash": "^4.17.21",
+    "pinyin": "^3.0.0-alpha.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.6",
+    "react-native-paper": "^5.9.1",
     "react-native-reanimated": "~2.14.4",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.10"
   },
   "devDependencies": {

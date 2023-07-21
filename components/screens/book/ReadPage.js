@@ -22,22 +22,11 @@ export default function ReadPage({ navigation })
     load();
   }, [section])
 
-  return (
-    <ScrollView contentContainerStyle={sty.scrollView}>
-      <Page lines={lines} />
-    </ScrollView>
-  );
 
-}
-
-
-function Page({ lines })
-{
   if(!lines || !lines.length)
     return <Text>Could not load</Text>
   return lines.map((entry, i) => <Line entry={entry} key={i} />);
 }
-
 
 function Line({ entry })
 {

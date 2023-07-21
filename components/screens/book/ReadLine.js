@@ -4,29 +4,26 @@ import { useTheme, Divider, Card, Button, Icon } from '@rneui/themed';
 import useMode from '../../../hooks/useMode';
 import useBook from '../../../hooks/useBook';
 import Sound from '../../audio/Sound';
-import { strokes } from '../../../lib/strokes/strokes';
-
 
 const fontScale = PixelRatio.getFontScale()
 
 
 export default function ReadLine({ navigation })
 {
-  const { current, setMode } = useBook();
-  const { line, characters } = current;
-  console.log(strokes);
+  const { current, setScreen } = useBook();
+  console.log(current);
 
   useEffect(() => {
-    navigation.addListener('tabPress', e => setMode('line'))
+    navigation.addListener('tabPress', e => setScreen('line'))
   }, []);
 
   return (
     <View style={sty.readLine}>
       <View style={sty.content}>
-        <Line line={line} />
+        <Line line={current.l} />
         <Divider style={sty.midDivider} width={2} />
         <View style={sty.characters}>
-          <Characters characters={characters} />
+          <Characters characters={current.c} />
         </View>
       </View>
     </View>
@@ -37,25 +34,44 @@ export default function ReadLine({ navigation })
 function Line({ line })
 {
   const { mode } = useMode();
-  const { mandarin, english } = line;
+  const styles = lineStyles(line.m.length);
 
   if(mode === 'read') {
     return ( 
       <View style={sty.line}>
-        <Text style={sty.mandarin}>{mandarin}</Text>
-        <Text style={sty.english}>{english}</Text>
+        <Text style={styles.mandarin}>{line.m}</Text>
+        <Text style={styles.english}>{line.e}</Text>
       </View>
     );
   } else {
     return (
       <View style={sty.line}>
-        <Text style={sty.english}>{english}</Text>
+        <Text style={styles.english}>{line.e}</Text>
         <View style={sty.lineChinese}>
-          <LineSound mandarin={mandarin} />
-          <Text style={sty.mandarin}>{mandarin}</Text>
+          <LineSound mandarin={line.m} />
+          <Text style={styles.mandarin}>{line.m}</Text>
         </View>
       </View>
     );
+  }
+
+  function lineStyles(length)
+  {
+    const sizeDeduction = Math.floor(length / 10) * 3;
+    console.log(sizeDeduction);
+    const fontSize = 40 / fontScale - sizeDeduction;
+    return StyleSheet.create({
+      mandarin: {
+        letterSpacing: 10,
+        textAlign: 'center',
+        fontSize,
+        fontWeight: '500',
+      },
+      english: {
+        fontSize,
+        marginBottom: 0,
+      }
+    });
   }
 }
 
@@ -71,40 +87,37 @@ function LineSound({ mandarin })
 
 function Characters({ characters })
 {
-  return characters.map((c, i) => <CharacterContent c={c} key={i} />);
+  return characters.map((c, i) => <CharContent c={c} key={i} />);
 }
 
 
-function CharacterContent({ c })
+function CharContent({ c })
 {
-  const { mode } = useMode();
-  const { mandarin, pinyin, english } = c;
-  const { together, seperate } = english;
+  const { m: mandarin, p: pinyin, e: english } = c;
 
-  const content = (
-    <View style={sty.characterContent}>
-      <Text style={sty.together}>{together}</Text>
-      <Text style={sty.mandarin}>{mandarin}</Text>
-      <PinyinText pinyin={pinyin} english={english} />
-      <Divider style={sty.divider} width={3}/>
-      <PlayCharIcon mode={mode} />
+  return (
+    <View style={sty.charContent}>
+      <Text style={sty.together}>{pinyin.g}</Text>
+      <View style={sty.charContentText}>
+        <View style={sty.charContentEntry}>
+          <Text style={sty.mandarin}>
+            {mandarin}
+          </Text>
+          <PinyinText pinyin={pinyin.s} english={english} />
+        </View> 
+      </View>
+      <View style={sty.charContentBottom}>
+        <Divider style={sty.divider} width={3}/>
+        <PlayCharIcon mandarin={mandarin} />
+      </View>
     </View>
   );
-
-  if(mode === 'read')
-    return content;
-  else
-    return (
-      <Sound text={mandarin} shouldPlay={false}>
-        { content }
-      </Sound>
-    );
 }
 
 
 function PinyinText({ pinyin, english })
 {
-  const { together, seperate } = english;
+  const { g, s } = english;
   return (
     <View style={sty.pinyinText}>
       <PinyinContent />
@@ -113,9 +126,9 @@ function PinyinText({ pinyin, english })
 
 
   function PinyinContent() {
-    if(seperate.length) {
+    if(s.length) {
       return pinyin.map((p, i) => {
-        const eng = seperate[i] ? seperate[i] : '';
+        const eng = s[i] ? s[i] : '';
 
         return (
           <View key={i} style={sty.pinyinTextContent}>
@@ -128,7 +141,7 @@ function PinyinText({ pinyin, english })
       return (
         <View style={sty.pinyinTextContent}>
           <Text style={sty.pinyin}>{pinyin[0]}</Text>
-          <Text style={sty.englishChar}>{together}</Text>
+          <Text style={sty.englishChar}>{g}</Text>
         </View>
       ); 
     }
@@ -151,14 +164,12 @@ function EnglishText({ english })
   );
 }
 
-function PlayCharIcon({ mode })
+function PlayCharIcon({ mandarin })
 {
+  const { mode } = useMode();
   if(mode !== 'listen') return null;
 
-  const { theme } = useTheme();
-  return (
-    <Icon type='antdesign' name='playcircleo' size={35} color={theme.colors.primary} />
-  );
+  return <Sound text={mandarin} shouldPlay={false} />
 }
 
 const sty = StyleSheet.create({
@@ -169,6 +180,7 @@ const sty = StyleSheet.create({
   },
   content: {
     flex: 1,
+    height: '100%',
     alignItems: 'center',
   },
   mandarin: {
@@ -179,10 +191,10 @@ const sty = StyleSheet.create({
   },
   english: {
     fontSize: 40 / fontScale,
-    marginBottom: 15,
+    marginBottom: 0,
   },
   pinyin: {
-    fontSize: 22 / fontScale,
+    fontSize: 25 / fontScale,
   },
   charEnglish: {
     fontSize: 20 / fontScale,
@@ -197,7 +209,6 @@ const sty = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 10,
     gap: 20,
   },
@@ -205,6 +216,8 @@ const sty = StyleSheet.create({
     alignItems: 'center',
   },
   line: {
+    paddingTop: 10,
+    paddingBottom: 10,
     width: '100%',
     alignItems: 'center',
   },
@@ -226,7 +239,19 @@ const sty = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
-  characterContent: {
+  charContent: {
+    alignItems: 'center',
+  },
+  charContentText: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  charContentEntry: {
+    alignItems: 'center',
+  },
+  charContentBottom: {
+    width: '100%',
     alignItems: 'center',
   },
   pinyinText: {
@@ -242,5 +267,6 @@ const sty = StyleSheet.create({
   },
   together: {
     fontSize: 20 / fontScale,
+    fontWeight: '600',
   }
 });

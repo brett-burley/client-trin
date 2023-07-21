@@ -2,7 +2,8 @@ import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Icon } from '@rneui/themed';
-import Books from '../screens/library/Books';
+
+import Library from '../screens/home/Library';
 //import Upload from '../library/Upload';
 
 

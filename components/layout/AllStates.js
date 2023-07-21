@@ -1,4 +1,4 @@
-import AlertState from '../../context/alert/AlertState';
+import ErrorState from '../../context/error/ErrorState';
 import LibraryState from '../../context/library/LibraryState';
 import ModeState from '../../context/mode/ModeState';
 import BookState from '../../context/book/BookState';
@@ -6,7 +6,7 @@ import BookState from '../../context/book/BookState';
 export default function AllStates({ children })
 {
   return (
-    <AlertState>
+    <ErrorState>
       <LibraryState>
         <ModeState>
           <BookState>
@@ -14,6 +14,6 @@ export default function AllStates({ children })
           </BookState>
         </ModeState>
       </LibraryState>
-    </AlertState>
+    </ErrorState>
   );
 }

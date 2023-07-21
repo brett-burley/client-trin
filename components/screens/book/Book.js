@@ -33,7 +33,7 @@ export default function Book({ route, navigation })
 
   async function load(book)
   {
-    await loadBook({ id, free });
+    await loadBook(id);
     setLoaded(true);
   }
 }

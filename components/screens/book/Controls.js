@@ -10,61 +10,79 @@ export default function Controls({ children })
 {
   return (
     <View style={sty.controls}>
-      <View style={sty.btns}>
-        <ControlBtn type="left" />
-        
-        <Menu />
-
-        <ControlBtn type="right" />
-      </View>
+      <ControlBtn type="left" />
+      <SectionText />
+      <ControlBtn type="right" />
     </View>
   );
 }
 
-
-function Menu()
+function SectionText()
 {
-  const [show, setShow] = useState(false);
-  const open = () => setShow(true);
-  const close = () => setShow(false);
-
-  return (
-    <View style={sty.menu}>
-      <MenuBtn onPress={open} />
-      <Popup show={show} close={close}>
-        <Settings close={close} />
-      </Popup>
-    </View>
-  );
-}
-
-
-function MenuBtn({ onPress })
-{
+  
   const { section } = useBook();
-  const { theme } = useTheme();
+  return (
+    <View style={sty.sectionTextContainer}>
+      <Text style={sty.sectionText}>{`Section: ${section+1}`}</Text>
+    </View>
+  );
+}
+
+function JumpTo({ onPress })
+{
+  <Text style={sty.sectionText}>{`Section: ${section+1}`}</Text>
+  const input = createRef();
+  const { bookLength, setSection, section } = useBook();
+  const [num, setNum] = useState(0);
+  
+  const disabled = num < 1 || num >= bookLength;
+  const range = `1-${bookLength}`
+  const errorMsg = `range: ${range}`;
+
 
   return (
-    <Button 
-      onPress={onPress}
-      type='outline'
-      containerStyle={sty.menuBtn}
-      style={sty.menuBtn}
-      buttonStyle={sty.menuBtn}
-    >
-      <View style={sty.menuBtnContents}>
-        <Icon
-          type="simple-line-icon"
-          name="settings"
-          reverseColor="#fff"
-          color={theme.colors.primary}
-          reverse
-          style={sty.menuIconInner}
+    <View style={sty.jumpTo}>
+      <View style={sty.jumpToInput}>
+        <Input
+          containerStyle={sty.input}
+          inputStyle={sty.input}
+          placeholder={`(${range})`}
+          onChangeText={v => onChange(v)}
+          ref={input}
         />
-        <Text style={sty.locationText}>{`section: ${section+1}`}</Text>
+
+        <Button
+          onPress={onPress}
+          disabled={disabled}
+          size="lg"
+        >
+          {`Jump to: ${num ? num : '-'}`}
+        </Button>
       </View>
-    </Button>
+      <Text style={sty.sectionText}>{`Section: ${section+1}`}</Text>
+    </View>
   );
+
+
+  function onChange(v)
+  {
+    const value = parseInt(v);
+    if(value < 1 || value >= bookLength) {
+      input.current.shake();
+      input.current.clear();
+      setNum(0);
+      return;
+    }
+
+    setNum(value);
+  }
+
+
+  function onPress()
+  {
+    close();
+    setSection(num-1);
+  }
 }
 
 
@@ -75,11 +93,11 @@ function ControlBtn({ type })
 
   return (     
     <Button
-      style={sty.btn}
-      containerStyle={sty.btn}
-      buttonStyle={sty.btn}
+      style={sty.controlBtn}
+      containerStyle={sty.controlBtn}
+      buttonStyle={sty.controlBtn}
       onPress={onPress}
-      type="clear"
+      type="outline"
       disabled={disabled}
       disabledStyle={sty.disabled}
     >
@@ -101,105 +119,17 @@ function ControlBtn({ type })
 
 
 const sty = StyleSheet.create({
-  safeArea: { 
-    width: '100%',
-    height: '100%'
-  },
-  openBtn: {
-    height: '100%',
-    width: '100%',
-    padding: 0,
-  },
-  modeBtnContainer: {
-    height: 80,
-  },
-  modeBtnText: {
-    fontSize: 20,
-  },
-  cancelItem: {
-    backgroundColor: '#ff190c',
-  },
-  cancelTitle: {
-    fontSize: 20,
-    marginTop: 10,
-    marginBottom: 10,
-    color: '#fff',
-  },
-  chevrons: {
-    fontWeight: 'lighter',
-    marginLeft: 15,
-    marginRight: 15,
-  },
-  listItemTitle: {
-    fontSize: 20,
-    margin: 10,
-  },
-  headerContent: {
-    flexDirection: 'row',
-    justifyContent: 'start',
-    alignItems: 'center'
-  },
-  accordion: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  sliderBtn: {
-    marginBottom: 10,
-    textAlign: 'center',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  gotoContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  backContent: {
-    flexDirection: 'row',
-    justifyContent: 'start',
-    alignItems: 'center',
-  },
-  btnContents: {
-    flex: 1,
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  btnIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  summary: {
-    color: '#43484d',
-    fontWeight: '400',
-  },
-  input: {
-    width: '50%',
-  },
-
   controls: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     borderTopStyle: 'solid',
     borderTopWidth: '1px',
     borderTopColor: 'rgb(17, 138, 178)',
   },  
-  btns: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  btn: {
-    flex: 5,
-    height: '100%',
-  },
-  menu: {
-    flex: 1,
+  controlBtn: {
+    flex: 4,
     height: '100%',
   },
   icon: {
@@ -209,14 +139,27 @@ const sty = StyleSheet.create({
     backgroundColor: '#e3e6e8',
     opacity: 0.7,
   },
-  menuBtn: {
-    height: '100%',
-    width: '100%',
+  sectionTextContainer: {
+    flex: 2,
   },
-  menuBtnContents: {
+  jumpTo: {
+    flex: 2,
+  },
+  jumpToInput: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  locationText: {
-    fontSize: 10,
+  input: {
+    width: '50%',
+  },
+  inputLabel: {
+    fontSize: 8,
+  },
+  sectionText: {
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });

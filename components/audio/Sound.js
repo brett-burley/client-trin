@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Platform, Pressable, Text, View } from 'react-native';
-import { Button } from '@rneui/themed';
+import { StyleSheet, Platform, Pressable, Text, View } from 'react-native';
+import { Icon, useTheme, Button } from '@rneui/themed';
 import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';
 import net from '../../lib/net/net';
@@ -13,6 +13,7 @@ export default function Sound({ text, shouldPlay, children })
   const [audio, setAudio] = useState();
   const filename = strToCode(text);
   const uri = net.audioUrl.concat(filename);
+  const { theme } = useTheme();
   let webAudio;
 
   useEffect(() => {
@@ -22,9 +23,14 @@ export default function Sound({ text, shouldPlay, children })
 
 
   return (
-    <Pressable onPress={playSound}>
-      { children }
-    </Pressable>
+    <View style={sty.sound}>
+      <Button onPress={playOnce} type='clear'>
+        <Icon type='ionicon' name='play-circle-outline' size={35} />
+      </Button>
+      <Button onPress={() => playMany(text.length)} type='clear'>
+        <Icon type='ionicon' name='play-forward-circle-outline' size={35} />
+      </Button>
+    </View>
   );
 
 
@@ -78,46 +84,45 @@ export default function Sound({ text, shouldPlay, children })
       await audio.playFromPositionAsync(0);
     }
   }
+
+  async function playOnce()
+  {
+    await playSound();
+  }
+
+
+  function playMany(len)
+  {
+    const time = getTime()
+    console.log(len, ' - ', time);
+    for(let i = 0; i < time.count; i++) {
+      const interval = i * time.ms;
+      setTimeout(() => playSound(), interval);
+    }
+
+    function getTime()
+    {
+      switch(true) {
+        case(len < 4):
+          return { count: 4, ms: 2000 };
+        case(len < 9):
+          return { count: 3, ms: 3000 };
+        case(len < 12):
+          return { count: 2, ms: 3500 };
+        default:
+          return { count: 2, ms: Math.floor(len / 3) * 1000 }
+      }
+    }
+  }
+
 }
 
 
-  /*
-  async function fromLocal()
-  {
-    const local = await getData(text);
-    if(!local) return false;
-    console.log('local: ', local);
-
-    webAudio.src = URL.createObjectURL(local.sound);
-    setAudio();
-    return true;
-  }
-
-  async function fromCommon()
-  {
-    console.log('creating from common');
-    return common.isCommon(text);
-  }
 
 
-
-  async function assetFromMetadata(text, url)
-  {
-    const name = text.toWellFormed();
-    const required = {
-      name,
-      hash: null,
-      type: 'mp3',
-      scales: [],
-      httpServerLocation: url
-    };
-
-    const meta = {
-      height: null,
-      width: null,
-      ...required
-    };
-    const asset = await Asset.fromMetadata(meta).downloadAsync();
-    return asset;
-  }
-*/
+const sty = StyleSheet.create({
+  sound: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});

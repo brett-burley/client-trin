@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import { ThemeProvider, createTheme } from '@rneui/themed';
 import AllStates from './components/layout/AllStates';
+import Screen from './components/screens/Screen';
 import ScreenNav from './components/navs/ScreenNav';
+import ErrorBoundary from './components/layout/ErrorBoundary';
 
 const theme = getTheme();
 
@@ -12,7 +16,9 @@ export default function App() {
       <AllStates>
         <SafeAreaProvider>
           <StatusBar style="auto" />
-          <ScreenNav />
+            <ErrorBoundary>
+              <ScreenNav />
+            </ErrorBoundary>
         </SafeAreaProvider>
       </AllStates>
     </ThemeProvider>
@@ -37,6 +43,5 @@ function getTheme()
       warning: '#FFB300',
       error: '#CC123D',
     },
-    mode: 'light',
   });
 }

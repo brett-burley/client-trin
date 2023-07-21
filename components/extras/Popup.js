@@ -21,7 +21,7 @@ export default function Popup({ show, close, children })
     >
       <Dialog.Actions>
         <Dialog.Button onPress={onPress}>
-          <Icon size={30} type="font-awesome" name="close" />
+          <Icon containerStyle={sty.icon} size={35} type="font-awesome" name="close" />
         </Dialog.Button>
       </Dialog.Actions>
 
@@ -44,5 +44,8 @@ const sty = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  icon: {
+    marginRight: 20,
   },
 });

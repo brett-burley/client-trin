@@ -4,7 +4,7 @@ import bookReducer from "./bookReducer";
 import { initState, book_t} from './init.js';
 import storage from '../../lib/storage/storage';
 import { Asset } from 'expo-asset';
-import { freeBooks } from '../../assets/books/books.js';
+import { books } from '../../assets/books/books.js';
 import net from '../../lib/net/net'
 import translate from '../../lib/translate/translate';
 
@@ -16,18 +16,14 @@ const BookState = (props) =>
 {
   const [state, dispatch] = useReducer(bookReducer, initState);
 
-  
-  async function loadBook({ id, free=true })
+  async function loadBook(id)
   {
     try {
-      let book;
-      if(!free) {
-        book = await storage.getData('book');
-      } else {
-        book = freeBooks[id];
-      }
+      let book = await storage.getData('book');
+      if(!book) book = books[id];
+
       const section = await getSection(id);
-      const screen = await storage.getData('screen')
+      const screen = await getScreen();
       const current = book[section];
       const payload = { book, current, section, id, screen };
 
@@ -39,6 +35,17 @@ const BookState = (props) =>
     }
   }
 
+  async function getScreen()
+  {
+    let screen;
+    try {
+      screen = await storage.getData('screen');
+      if(!screen) return state.screen;
+      return screen;
+    } catch(e) {
+      return state.screen;
+    }
+  }
 
   async function translateCurrent()
   {
@@ -55,7 +62,7 @@ const BookState = (props) =>
   async function setScreen(screen)
   {
     if(screen !== state.screen) {
-      await storage.setData('screen', screen);
+      storage.setDataAsync('screen', screen);
       dispatch({ type: book_t.BOOK_SUCCESS, payload: { screen } }); 
     }
   }
@@ -113,7 +120,7 @@ const BookState = (props) =>
   {
     try {
       const key = id.concat('-section');
-      await storage.setData(key, section);
+      storage.setDataAsync(key, section);
       return true;
     } catch(e) {
       console.error(e);
