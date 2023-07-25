@@ -29,12 +29,12 @@ function UnavailableMsg()
     <View style={sty.cardContainer}>
       <Card containerStyle={sty.card}>
         <Badge
-          value="Oops!"
+          value="Sorry"
           status="error"
           badgeStyle={sty.badge}
           textStyle={sty.badgeText}
         />
-        <Text style={sty.message}>Upload Temporarily Unavailable</Text>
+        <Text style={sty.message}>Uploading text is temporarily disabled</Text>
       </Card>
     </View>
   );

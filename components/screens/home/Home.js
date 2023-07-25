@@ -49,9 +49,8 @@ function AllBooks()
 
 function UploadSection()
 {
-  const navigation = useNavigation();
+  const [isVisible, setIsVisible] = useState(false);
   const { theme } = useTheme(); 
-  const [isVisible, setIsVisible] = useState(true)
   
   return (
     <View style={sty.upload}>
@@ -130,12 +129,12 @@ function useStyles(theme)
   return StyleSheet.create({
     library: {
       flex: 1,
-      flexGrow: 3,
+      flexGrow: 5,
       alignItems: 'center',
     },
     upload: {
       flex: 1,
-      flexGrow: 1,
+      flexGrow: 2,
       alignItems: 'center',
       justifyContent: 'center',
     },
