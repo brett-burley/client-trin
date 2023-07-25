@@ -7,9 +7,11 @@ export default function Games({ navigation })
 {
   return (
     <Screen>
-      <Header title="Games">
-        <Icon type="material-community" name="gamepad-variant-outline" size={50} />
-      </Header>
+      <View style={sty.header}>
+        <Header title="Games">
+          <Icon type="material-community" name="gamepad-variant-outline" size={50} />
+        </Header>
+      </View>
       <View style={sty.buttons}>
         <Button
           onPress={() => navigation.navigate("Strokes")}
@@ -40,17 +42,26 @@ export default function Games({ navigation })
 
 
 const sty = StyleSheet.create({
+  header: {
+    flex: 1,
+    alignItems: 'center',
+  },
   buttons: {
     flex: 1,
+    flexGrow: 6,
     height: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-  },
-  btn: {
+    flexWrap: 'wrap',
   },
   navBtn: {
-    margin: 80,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxWidth: '50%',
+    minWidth: 200,
+    height: 200,
   },
   navText: {
     fontSize: 35,

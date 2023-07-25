@@ -27,24 +27,28 @@ export default function ScreenNav() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName="Games"
         screenOptions={{
-          tabBarLabelStyle: { color: theme.colors.black },
           headerStyle: {
             backgroundColor: theme.colors.grey5,
-          },
-          headerTitleStyle: {
-            color: theme.colors.black,
           },
           tabBarStyle: {
             backgroundColor: theme.colors.grey5,
           },
+          tabBarLabelStyle: {
+            fontSize: 22,
+            marginLeft: 25,
+          },
+          tabBarActiveTintColor: theme.colors.warning,
+          tabBarInactiveTintColor: theme.colors.black,
+          headerTintColor: '#fff',
         }}
       >
         <Tab.Screen
           name="Home"
           component={Home}
           options={{
-            tabBarIcon: () => <Icon type="antdesign" name="home" size={24} />,
+            tabBarIcon: () => <Icon type="antdesign" name="home" size={28} />,
           }}
         />
 
@@ -52,7 +56,7 @@ export default function ScreenNav() {
           name="Games" 
           component={Games}
           options={{
-            tabBarIcon: () => <Icon type='material-community' name='dice-multiple-outline' size={24} />
+            tabBarIcon: () => <Icon type='material-community' name='dice-multiple-outline' size={28} />,
           }}
         />
 
