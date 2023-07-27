@@ -8,6 +8,7 @@ import Page from './Page';
 
 export default function Book({ route, navigation })
 {
+  return <Text>Book</Text>
   const [loaded, setLoaded] = useState();
   const { loadBook } = useBook();
   const { book } = route.params;

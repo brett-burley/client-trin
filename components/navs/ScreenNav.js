@@ -6,6 +6,7 @@ import { useTheme, Icon } from '@rneui/themed';
 
 import Webpage from '../screens/web/Webpage';
 import Home from '../screens/home/Home';
+import Book from '../screens/book/Book';
 import Games from '../screens/home/Games';
 import Strokes from '../screens/strokes/Strokes';
 import Numbers from '../screens/numbers/Numbers';
@@ -35,13 +36,24 @@ export default function ScreenNav() {
           }}
         />
 
+        <Tab.Screen
+          name="Book"
+          component={Book}
+          options={{
+            tabBarIcon: () => <Icon type="entypo" name="open-book" size={28} />,
+            lazy: true,
+          }}
+        />
+
         <Tab.Screen 
           name="Games" 
           component={Games}
           options={{
             tabBarIcon: () => <Icon type='material-community' name='dice-multiple-outline' size={28} />,
+            lazy: true,
           }}
         />
+
 
         <Tab.Screen
           name="Webpage"

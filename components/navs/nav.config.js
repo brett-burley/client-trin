@@ -24,6 +24,7 @@ const hideTab = {
   tabBarStyle: { display: 'none' },
   tabBarItemStyle: { display: 'none' },
   tabBarLabelStyle: { display: 'none' },
+  lazy: true,
 }
 
 
