@@ -9,40 +9,23 @@ import Home from '../screens/home/Home';
 import Games from '../screens/home/Games';
 import Strokes from '../screens/strokes/Strokes';
 import Numbers from '../screens/numbers/Numbers';
+
+import config from './nav.config.js';
     
 
 const Tab = createBottomTabNavigator();
 
-const hideTab = {
-  headerShown: false,
-  tabBarShowLabel: false,
-  tabBarStyle: { display: 'none' },
-  tabBarItemStyle: { display: 'none' },
-  tabBarLabelStyle: { display: 'none' },
-}
+
 
 export default function ScreenNav() {
   const { theme } = useTheme();
+  const { getScreenOptions, hideTab } = config;
+  const screenOptions = getScreenOptions(theme);
 
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Games"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: theme.colors.grey5,
-          },
-          tabBarStyle: {
-            backgroundColor: theme.colors.grey5,
-          },
-          tabBarLabelStyle: {
-            fontSize: 22,
-            marginLeft: 25,
-          },
-          tabBarActiveTintColor: theme.colors.warning,
-          tabBarInactiveTintColor: theme.colors.black,
-          headerTintColor: '#fff',
-        }}
+        screenOptions={screenOptions}
       >
         <Tab.Screen
           name="Home"
