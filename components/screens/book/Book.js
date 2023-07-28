@@ -8,18 +8,14 @@ import Page from './Page';
 
 export default function Book({ route, navigation })
 {
-  return <Text>Book</Text>
   const [loaded, setLoaded] = useState();
   const { loadBook } = useBook();
   const { book } = route.params;
   const { title, id, free } = book;
 
   useEffect(() => {
-    if(!loaded) {
-      (async () => {
-        await load(book);
-      })();
-    }
+    if(!loaded)
+      (async () => await load(book))();
   }, []); 
 
 

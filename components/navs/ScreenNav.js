@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { Text, Platform, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useTheme, Icon } from '@rneui/themed';
+import { Icon } from '@rneui/themed';
+import useScreen from '../../hooks/useScreen';
 
 import Webpage from '../screens/web/Webpage';
 import Home from '../screens/home/Home';
@@ -11,17 +12,12 @@ import Games from '../screens/home/Games';
 import Strokes from '../screens/strokes/Strokes';
 import Numbers from '../screens/numbers/Numbers';
 
-import config from './nav.config.js';
-    
 
 const Tab = createBottomTabNavigator();
 
 
-
 export default function ScreenNav() {
-  const { theme } = useTheme();
-  const { getScreenOptions, hideTab } = config;
-  const screenOptions = getScreenOptions(theme);
+  const {screenOptions, hideTab } = useScreen();
 
   return (
     <NavigationContainer>
@@ -42,6 +38,7 @@ export default function ScreenNav() {
           options={{
             tabBarIcon: () => <Icon type="entypo" name="open-book" size={28} />,
             lazy: true,
+            headerShown: false,
           }}
         />
 
