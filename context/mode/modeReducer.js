@@ -10,7 +10,7 @@ export default (state, action) => {
         ...state,
         ...payload
       }
-    case read_t.MODE_ERROR:
+    case mode_t.MODE_ERROR:
     default:
       return state
   }

@@ -1,6 +1,7 @@
 export const initState = {
   mode: 'read',
   screen: 'line',
+  themeMode: 'light',
 }; 
 
 export const mode_t = {

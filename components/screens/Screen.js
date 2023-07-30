@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { Button, Icon, useTheme, useThemeMode } from '@rneui/themed';
+import useMode from '../../hooks/useMode';
 
 export default function Screen({ children })
 {
   const { theme } = useTheme();
   const { mode, setMode } = useThemeMode();
+  const { themeMode, setThemeMode } = useMode();
 
   useEffect(() => {
-    setMode('dark');
-  }, [])
+    if(mode !== themeMode)
+      setMode(themeMode);
+  }, [themeMode])
 
   const sty = makeStyles(theme);
 
@@ -30,8 +33,8 @@ export default function Screen({ children })
   function switchMode()
   {
     const newMode = mode === 'light' ? 'dark' : 'light';
-
-    setMode(newMode);
+    
+    setThemeMode(newMode);
   }
 }
 

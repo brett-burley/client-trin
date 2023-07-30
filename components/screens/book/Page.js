@@ -15,7 +15,6 @@ export default function Page()
 {
   return (
     <View style={sty.page}>
-      <BackBtn />
       <Menu />
       <View style={sty.read}>
         <TabViewPages />
@@ -142,8 +141,8 @@ const sty = StyleSheet.create({
   },
   menu: {
     position: 'absolute',
-    top: '10px',
-    left: '95%',
+    top: 10,
+    left: 5,
     zIndex: 1000,
   },
   backBtn: {
