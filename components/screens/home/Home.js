@@ -135,6 +135,7 @@ function useStyles(theme)
     upload: {
       flex: 1,
       flexGrow: 2,
+      height: '100%',
       alignItems: 'center',
       justifyContent: 'center',
     },

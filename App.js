@@ -30,18 +30,18 @@ function getTheme()
 {
   return createTheme({
     lightColors: {
-      primary: '#118AB2',
-      secondary: '#073B4C',
-      success: '#06D6A0',
-      warning: '#FF0166',
-      error: '#EF476F',
+      primary: '#c0cff2',
+      secondary: '#a730f1',
+      success: '#46cc4b',
+      warning: '#fffc41',
+      error: '#f03716',
     },
     darkColors: {
-      primary: '#0C627F',
-      secondary: '#052935',
-      success: '#049971',
-      warning: '#FFB300',
-      error: '#CC123D',
+      primary: '#a5bcf0',
+      secondary: '#9a15ed',
+      success: '#2cc932',
+      warning: '#fcf92b',
+      error: '#ed2400',
     },
   });
 }
