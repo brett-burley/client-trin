@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Icon } from '@rneui/themed';
+import { useTheme, Icon } from '@rneui/themed';
 
 import ReadLine from '../screens/book/ReadLine';
 import ReadPage from '../screens/book/ReadPage';
@@ -9,14 +9,16 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function BookNav()
 {
+  const { theme } = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveBackgroundColor: 'rgba(170,73,235,0.3)',
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#000',
         tabBarLabelStyle: { fontSize: 15 },
+        tabBarStyle: { backgroundColor: theme.colors.grey5 },
+        tabBarActiveTintColor: theme.colors.warning,
+        tabBarInactiveTintColor: theme.colors.black,
       }}
     >
 

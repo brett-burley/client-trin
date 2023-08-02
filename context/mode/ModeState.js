@@ -3,7 +3,6 @@ import ModeContext from "./modeContext";
 import modeReducer from "./modeReducer";
 import { initState, mode_t } from './init.js';
 import storage from '../../lib/storage/storage';
-//import _ from 'lodash';
 
 
 const ModeState = (props) =>
@@ -19,9 +18,24 @@ const ModeState = (props) =>
 
   async function loadMode()
   {
-    const mode = await storage.getData('mode');
-    if(mode && mode !== state.mode)
-      dispatch({ type: mode_t.MODE_SUCCESS, payload: { mode } });
+    try {
+      let mode = await storage.getData('mode');
+      let themeMode = await storage.getData('themeMode');
+      if(!mode) {
+        mode = state.mode;
+        storage.setData('mode', mode);
+      }
+
+      if(!themeMode) {
+        themeMode = state.themeMode;
+        storage.setData('themeMode', themeMode);
+      }
+        
+      dispatch({ type: mode_t.MODE_SUCCESS, payload: { mode, themeMode } });
+    } catch(e) {
+      console.error('loadMode() failed');
+      dispatch({ type: mode_t.MODE_ERROR });
+    }
   }
  
 
@@ -47,13 +61,23 @@ const ModeState = (props) =>
       dispatch({ type: mode_t.MODE_SUCCESS, payload: { screen } });
   }
 
+  function setThemeMode(themeMode)
+  {
+    if(themeMode !== state.themeMode) {
+      storage.setDataAsync('themeMode', themeMode);
+      dispatch({ type: mode_t.MODE_SUCCESS, payload: { themeMode } });
+    }
+  }
 
   return (
     <ModeContext.Provider
       value={{
         mode: state.mode,
+        screen: state.screen,
+        themeMode: state.themeMode,
         setMode,
         setScreen,
+        setThemeMode,
       }}
     >
       {props.children}

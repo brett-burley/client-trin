@@ -37,6 +37,7 @@ function AllBooks()
 
   const color = theme.colors.black;
   const backgroundColor = theme.colors.white;
+
   return (
     <Card containerStyle={[sty.booksCard, { backgroundColor }]}>
       <Text style={[sty.booksTitle, { color }]}>Books</Text>
@@ -46,30 +47,6 @@ function AllBooks()
     </Card>
   );
 }
-
-function UploadSection()
-{
-  const [isVisible, setIsVisible] = useState(false);
-  const { theme } = useTheme(); 
-  
-  return (
-    <View style={sty.upload}>
-      <Upload isVisible={isVisible} onClose={() => setIsVisible(false)} />
-      <Divider color={theme.colors.black} style={{width: '98%', margin: 20}}/>
-      <Button
-        onPress={() => setIsVisible(true)}
-        size="lg"
-        titleStyle={sty.uploadBtn}
-        radius="md"
-      >
-        Upload Text
-      </Button>
-    </View>
-  );
-}
-
-
-
 
 
 function BookCover({ title })
@@ -105,6 +82,7 @@ function BookCover({ title })
 
 }
 
+
 function BookImage({ t })
 {
 
@@ -123,6 +101,28 @@ function BookImage({ t })
   );
 }
 
+function UploadSection()
+{
+  const [isVisible, setIsVisible] = useState(false);
+  const { theme } = useTheme(); 
+  
+  return (
+    <View style={sty.upload}>
+      <Upload isVisible={isVisible} onClose={() => setIsVisible(false)} />
+      <Divider color={theme.colors.black} style={{width: '98%', margin: 20}}/>
+      <Button
+        onPress={() => setIsVisible(true)}
+        size="lg"
+        titleStyle={sty.uploadBtn}
+        radius="md"
+      >
+        Upload Text
+      </Button>
+    </View>
+  );
+}
+
+
 
 function useStyles(theme)
 {
@@ -135,6 +135,7 @@ function useStyles(theme)
     upload: {
       flex: 1,
       flexGrow: 2,
+      height: '100%',
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -147,8 +148,6 @@ function useStyles(theme)
     booksCard: {
       width: '100%',
       backgroundColor: '#121212',
-      padding: 15,
-      paddingTop: 0,
     },
     uploadBtn: {
       fontSize: 30,
@@ -166,15 +165,17 @@ function useStyles(theme)
       alignItems: 'center',
     },
     pressable: {
-      width: 200,
-      height: 300,
+      minWidth: 200,
+      minHeight: 300,
       boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+      backgroundColor: 'white',
+      padding: 10,
+      margin: 10,
     },
     coverContainer: {
-      margin: 0,
       backgroundColor: '#fffef7',
       height: '100%',
-      padding: 5,
+      margin: 0,
     },
     bookImg: {
       height: 150,

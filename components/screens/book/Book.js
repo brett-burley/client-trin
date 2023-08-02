@@ -14,11 +14,8 @@ export default function Book({ route, navigation })
   const { title, id, free } = book;
 
   useEffect(() => {
-    if(!loaded) {
-      (async () => {
-        await load(book);
-      })();
-    }
+    if(!loaded)
+      (async () => await load(book))();
   }, []); 
 
 

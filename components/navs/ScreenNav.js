@@ -2,47 +2,27 @@ import { useEffect } from 'react';
 import { Text, Platform, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useTheme, Icon } from '@rneui/themed';
+import { Icon } from '@rneui/themed';
+import useScreen from '../../hooks/useScreen';
 
 import Webpage from '../screens/web/Webpage';
 import Home from '../screens/home/Home';
+import Book from '../screens/book/Book';
 import Games from '../screens/home/Games';
 import Strokes from '../screens/strokes/Strokes';
 import Numbers from '../screens/numbers/Numbers';
-    
+
 
 const Tab = createBottomTabNavigator();
 
-const hideTab = {
-  headerShown: false,
-  tabBarShowLabel: false,
-  tabBarStyle: { display: 'none' },
-  tabBarItemStyle: { display: 'none' },
-  tabBarLabelStyle: { display: 'none' },
-}
 
 export default function ScreenNav() {
-  const { theme } = useTheme();
+  const {screenOptions, hideTab } = useScreen();
 
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Games"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: theme.colors.grey5,
-          },
-          tabBarStyle: {
-            backgroundColor: theme.colors.grey5,
-          },
-          tabBarLabelStyle: {
-            fontSize: 22,
-            marginLeft: 25,
-          },
-          tabBarActiveTintColor: theme.colors.warning,
-          tabBarInactiveTintColor: theme.colors.black,
-          headerTintColor: '#fff',
-        }}
+        screenOptions={screenOptions}
       >
         <Tab.Screen
           name="Home"
@@ -52,13 +32,25 @@ export default function ScreenNav() {
           }}
         />
 
+        <Tab.Screen
+          name="Book"
+          component={Book}
+          options={{
+            tabBarIcon: () => <Icon type="entypo" name="open-book" size={28} />,
+            lazy: true,
+            headerShown: false,
+          }}
+        />
+
         <Tab.Screen 
           name="Games" 
           component={Games}
           options={{
             tabBarIcon: () => <Icon type='material-community' name='dice-multiple-outline' size={28} />,
+            lazy: true,
           }}
         />
+
 
         <Tab.Screen
           name="Webpage"
